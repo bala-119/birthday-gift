@@ -1,0 +1,903 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <title>🎁 A Magical Birthday Journey For You! 🎂</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            user-select: none;
+        }
+
+        body {
+            min-height: 100vh;
+            background: linear-gradient(145deg, #fbc2eb 0%, #a6c1ee 100%);
+            font-family: 'Poppins', 'Segoe UI', 'Comic Neue', system-ui, -apple-system, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow-x: hidden;
+            position: relative;
+            cursor: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="24" height="27" viewBox="0 0 24 27"><polygon points="2,2 22,13 12,16 2,25" fill="%23ff66b5" stroke="%23ff1493" stroke-width="1.5"/><circle cx="12" cy="13" r="2" fill="white"/></svg>') 12 5, auto;
+        }
+
+        .floating-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        .floating-bg span {
+            position: absolute;
+            font-size: 1.8rem;
+            opacity: 0.3;
+            animation: floatAround 18s infinite linear;
+            user-select: none;
+        }
+
+        @keyframes floatAround {
+            0% { transform: translateY(100vh) rotate(0deg); opacity: 0; }
+            10% { opacity: 0.5; }
+            90% { opacity: 0.5; }
+            100% { transform: translateY(-20vh) rotate(360deg); opacity: 0; }
+        }
+
+        .card-container {
+            position: relative;
+            z-index: 10;
+            width: 100%;
+            max-width: 650px;
+            margin: 1.5rem;
+            background: rgba(255,255,245,0.92);
+            backdrop-filter: blur(10px);
+            border-radius: 72px 48px 80px 48px;
+            box-shadow: 0 25px 45px rgba(0,0,0,0.2), 0 0 0 8px #fff8, 0 0 0 12px #ffb7c5;
+            transition: all 0.2s ease;
+            min-height: 550px;
+        }
+
+        .page {
+            padding: 2rem 2rem 2.5rem;
+            text-align: center;
+            transition: 0.4s ease;
+            display: none;
+            animation: fadePop 0.6s cubic-bezier(0.34, 1.2, 0.64, 1);
+        }
+
+        .active-page {
+            display: block;
+        }
+
+        @keyframes fadePop {
+            0% { opacity: 0; transform: scale(0.96) translateY(15px); }
+            100% { opacity: 1; transform: scale(1) translateY(0); }
+        }
+
+        h1 {
+            font-size: 2.6rem;
+            background: linear-gradient(135deg, #e6487b, #f7b42c);
+            background-clip: text;
+            -webkit-background-clip: text;
+            color: transparent;
+            text-shadow: 2px 2px 8px rgba(0,0,0,0.05);
+            margin-bottom: 1rem;
+        }
+
+        .birthday-emoji {
+            font-size: 4.5rem;
+            filter: drop-shadow(2px 6px 12px rgba(0,0,0,0.2));
+            margin: 0.5rem 0;
+        }
+
+        .cute-message {
+            background: #fff0f5;
+            padding: 1rem;
+            border-radius: 48px;
+            margin: 1.5rem 0;
+            font-size: 1.2rem;
+            color: #b34180;
+            font-weight: 500;
+            box-shadow: inset 0 1px 3px #ffc0dd, 0 6px 12px rgba(0,0,0,0.05);
+        }
+
+        .next-btn {
+            background: linear-gradient(95deg, #ff9a9e, #fad0c4);
+            border: none;
+            padding: 14px 32px;
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: #5e2a3e;
+            border-radius: 60px;
+            cursor: pointer;
+            box-shadow: 0 8px 0 #b1626e;
+            transition: 0.07s linear;
+            font-family: inherit;
+            margin-top: 1rem;
+            letter-spacing: 1px;
+            display: inline-block;
+            position: relative;
+        }
+
+        .next-btn:active {
+            transform: translateY(4px);
+            box-shadow: 0 4px 0 #b1626e;
+        }
+
+        .btn-move-area {
+            position: relative;
+            min-height: 120px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin: 20px 0;
+        }
+
+        .moving-btn {
+            transition: all 0.25s cubic-bezier(0.2, 0.9, 0.4, 1.1);
+            position: relative;
+            z-index: 55;
+        }
+
+        .timer-text {
+            font-size: 0.9rem;
+            background: #ffe0f0;
+            display: inline-block;
+            padding: 4px 16px;
+            border-radius: 60px;
+            margin-top: 12px;
+            font-weight: 600;
+        }
+
+        /* Song Section */
+        .song-section {
+            background: linear-gradient(135deg, #ffdde1, #ee9ca7);
+            border-radius: 60px;
+            padding: 1.2rem;
+            margin: 1rem 0;
+            text-align: center;
+            animation: gentlePulse 2s infinite;
+        }
+
+        @keyframes gentlePulse {
+            0% { box-shadow: 0 0 0 0 rgba(255, 105, 180, 0.4); }
+            70% { box-shadow: 0 0 0 12px rgba(255, 105, 180, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(255, 105, 180, 0); }
+        }
+
+        .song-title {
+            font-size: 1rem;
+            color: #6b2e4a;
+            margin-bottom: 10px;
+            font-weight: bold;
+        }
+
+        audio {
+            width: 100%;
+            border-radius: 50px;
+            outline: none;
+        }
+
+        .music-note {
+            font-size: 2rem;
+            animation: bounce 0.8s infinite ease-in-out;
+            display: inline-block;
+        }
+
+        @keyframes bounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-8px); }
+        }
+
+        /* Lyrics Box */
+        .lyrics-box {
+            background: rgba(255, 240, 245, 0.95);
+            border-radius: 48px;
+            padding: 1.5rem;
+            margin: 1rem 0;
+            text-align: center;
+            font-family: 'Georgia', serif;
+            color: #9b4b6e;
+            line-height: 1.8;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.1);
+            border: 1px solid #ffdbac;
+            max-height: 400px;
+            overflow-y: auto;
+        }
+
+        .lyrics-box p {
+            margin: 0.5rem 0;
+            font-size: 0.95rem;
+        }
+
+        .lyrics-box .verse-title {
+            font-weight: bold;
+            color: #e6487b;
+            margin-top: 0.8rem;
+            margin-bottom: 0.5rem;
+            font-size: 1rem;
+        }
+
+        .lyrics-box .chorus {
+            background: #ffe0f0;
+            border-radius: 30px;
+            padding: 0.8rem;
+            margin: 0.8rem 0;
+        }
+
+        ::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: #ffe0f0;
+            border-radius: 10px;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: #ff9a9e;
+            border-radius: 10px;
+        }
+
+        /* Quiz Section */
+        .quiz-section {
+            background: #fff5e6;
+            border-radius: 50px;
+            padding: 1.5rem;
+            margin: 1rem 0;
+        }
+
+        .quiz-question {
+            background: #ffe0f0;
+            border-radius: 40px;
+            padding: 1rem;
+            margin: 1rem 0;
+            text-align: left;
+        }
+
+        .quiz-question p {
+            font-weight: bold;
+            color: #b34180;
+            margin-bottom: 10px;
+        }
+
+        .quiz-input {
+            width: 100%;
+            padding: 12px;
+            border-radius: 50px;
+            border: 2px solid #ffb7c5;
+            font-size: 1rem;
+            text-align: center;
+            font-family: inherit;
+            outline: none;
+        }
+
+        .quiz-input:focus {
+            border-color: #ff69b4;
+        }
+
+        .image-options {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 1rem;
+            margin: 1rem 0;
+        }
+
+        .image-option {
+            background: white;
+            border-radius: 30px;
+            padding: 0.8rem;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.2s;
+            border: 3px solid transparent;
+            width: 100px;
+        }
+
+        .image-option.selected {
+            border-color: #ff69b4;
+            background: #ffe0f0;
+            transform: scale(1.02);
+        }
+
+        .image-option:hover {
+            transform: scale(1.05);
+        }
+
+        .image-emoji {
+            font-size: 3rem;
+        }
+
+        .quiz-submit {
+            background: linear-gradient(95deg, #ff9a9e, #fad0c4);
+            border: none;
+            padding: 12px 28px;
+            font-size: 1.1rem;
+            font-weight: bold;
+            border-radius: 50px;
+            cursor: pointer;
+            margin-top: 1rem;
+        }
+
+        .quiz-feedback {
+            margin-top: 1rem;
+            padding: 0.8rem;
+            border-radius: 40px;
+            font-weight: bold;
+            display: none;
+        }
+
+        .wait-message {
+            background: linear-gradient(135deg, #ffecd2, #fcb69f);
+            border-radius: 50px;
+            padding: 1.5rem;
+            margin-top: 1rem;
+            text-align: center;
+            display: none;
+            animation: glowPulse 1.5s infinite;
+        }
+
+        @keyframes glowPulse {
+            0% { box-shadow: 0 0 0 0 rgba(255, 180, 50, 0.4); }
+            70% { box-shadow: 0 0 0 15px rgba(255, 180, 50, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(255, 180, 50, 0); }
+        }
+
+        footer {
+            font-size: 0.7rem;
+            margin-top: 1.5rem;
+            opacity: 0.7;
+        }
+
+        @media (max-width: 550px) {
+            .card-container { margin: 1rem; }
+            h1 { font-size: 2rem; }
+            .image-option { width: 75px; }
+            .image-emoji { font-size: 2rem; }
+            .lyrics-box { max-height: 300px; }
+        }
+    </style>
+</head>
+<body>
+
+<div class="floating-bg" id="floatingBg"></div>
+
+<div class="card-container" id="mainCard">
+    <!-- PAGE 1: THE MISCHIEF MOVING BUTTON GAME -->
+    <div id="page1" class="page active-page">
+        <div class="birthday-emoji">🎂🎈✨</div>
+        <h1>Hey Beautiful! 🎀</h1>
+        <div class="cute-message">
+            🌸 A little birthday magic...<br>
+            Try to catch the button for 20 seconds — it moves smoothly! 🌸<br>
+            👉💖 Let the adventure begin 💖👈
+        </div>
+        <div class="btn-move-area" id="moveArea">
+            <button id="mischiefBtn" class="next-btn moving-btn">🎁 GET ME TO THE NEXT PAGE 🎁</button>
+        </div>
+        <div id="timerInfo" class="timer-text">✨ click the button & it will play hide & seek ✨</div>
+        <footer>❤️ it moves gently, just for fun — 20 seconds of giggles ❤️</footer>
+    </div>
+
+    <!-- PAGE 2: SURPRISE CUTE GALLERY & CONFETTI -->
+    <div id="page2" class="page">
+        <div class="birthday-emoji">🎉🎀🥳</div>
+        <h1 style="font-size:2.2rem;">ADVANCE HAPPY BIRTHDAY PREETY! 💖</h1>
+        <div class="cute-grid" style="display: flex; flex-wrap: wrap; justify-content: center; gap: 0.8rem; margin: 1rem 0;">
+            <div class="cute-card" style="background:#fff0f5; border-radius: 50px; padding: 0.5rem 1rem;"><span>🐱</span> cuddles</div>
+            <div class="cute-card" style="background:#fff0f5; border-radius: 50px; padding: 0.5rem 1rem;"><span>🌸</span> blossom</div>
+            <div class="cute-card" style="background:#fff0f5; border-radius: 50px; padding: 0.5rem 1rem;"><span>🍰</span> sweetest</div>
+            <div class="cute-card" style="background:#fff0f5; border-radius: 50px; padding: 0.5rem 1rem;"><span>🦄</span> magic</div>
+            <div class="cute-card" style="background:#fff0f5; border-radius: 50px; padding: 0.5rem 1rem;"><span>💖</span> love</div>
+        </div>
+        <div class="confetti-message" style="background:#ffe8c7; border-radius: 40px; padding: 0.8rem; font-weight: bold;">
+            ⭐ You are the sparkle in this universe! ⭐<br>
+            Wishing you endless joy, cake, and adventures!
+        </div>
+        <button class="next-btn" id="gotoPage3Btn" style="margin-top: 20px;">🎵 NEXT: A Song For You 🎵</button>
+        <footer>✨ more surprises ahead ✨</footer>
+    </div>
+
+    <!-- PAGE 3: SONG + LYRICS + QUESTIONS -->
+    <div id="page3" class="page">
+        <div class="birthday-emoji">🎵🎶💖</div>
+        <h1>A Song Just For You</h1>
+        
+        <!-- 🎵 SONG SECTION -->
+        <div class="song-section">
+            <div class="music-note">🎵 🎶 🎵</div>
+            <div class="song-title">✨ My Lovely Thief ✨</div>
+            <audio id="birthdaySong" controls>
+                <source src="My_Lovely_Thief.mp3" type="audio/mpeg">
+                Your browser doesn't support audio. Please upload an MP3 file.
+            </audio>
+            <div class="music-note">🎶 🎵 🎶</div>
+            <p style="font-size: 0.75rem; margin-top: 8px; color: #8b3a5e;">💝 A special song made with love 💝</p>
+        </div>
+
+        <!-- 📜 LYRICS SECTION -->
+        <div class="lyrics-box">
+            <div class="verse-title">🎀 Verse 1 🎀</div>
+            <p>You are the one, beautiful you,</p>
+            <p>The light that makes the shadows new.</p>
+            <p>The quiet hum when the city sleeps,</p>
+            <p>The gravity that pulls my wandering thoughts deep.</p>
+            <p>You're a masterpiece that time can't touch,</p>
+            <p>I never knew I could love a soul this much.</p>
+
+            <div class="chorus">
+                <div class="verse-title">🎵 Chorus 🎵</div>
+                <p>You are the one, beautiful you,</p>
+                <p>The light that makes the shadows new.</p>
+                <p>My lovely thief, you stole my heart away,</p>
+                <p>And I'm perfectly happy letting it stay.</p>
+                <p>Every heartbeat sings your name,</p>
+                <p>A gentle fire, a steady flame.</p>
+            </div>
+
+            <div class="verse-title">🌸 Verse 2 🌸</div>
+            <p>In the silence of the morning light,</p>
+            <p>You're the color burning through the white.</p>
+            <p>A simple truth in a world of glass,</p>
+            <p>You're the only moment I want to last.</p>
+            <p>With a smile that turns the grey to gold,</p>
+            <p>You're the greatest story ever told.</p>
+
+            <div class="verse-title">🌙 Bridge 🌙</div>
+            <p>You don't even try, yet you outshine the stars,</p>
+            <p>Healing the world and hiding its scars.</p>
+            <p>I'm lost in the grace of your lovely ways,</p>
+            <p>Wanting to find you for all of my days.</p>
+
+            <div class="chorus">
+                <div class="verse-title">🎵 Chorus 🎵</div>
+                <p>YOU ARE THE ONE, BEAUTIFUL YOU,</p>
+                <p>THE LIGHT THAT MAKES THE SHADOWS NEW.</p>
+                <p>My lovely thief, you stole my heart away,</p>
+                <p>And I'm perfectly happy letting it stay.</p>
+                <p>Every heartbeat sings your name,</p>
+                <p>A gentle fire, a steady flame.</p>
+            </div>
+
+            <div class="verse-title">💫 Outro 💫</div>
+            <p>So pretty, so rare,</p>
+            <p>Beyond compare.</p>
+            <p>You're the one, beautiful you...</p>
+            <p>Just you. 💖</p>
+        </div>
+        
+        <!-- 📝 QUESTION SECTION -->
+        <div class="quiz-section">
+            <h3 style="color: #b34180; margin-bottom: 1rem;">💌 Answer These & Unlock the Magic 💌</h3>
+            
+            <!-- Question 1: Who are you? -->
+            <div class="quiz-question">
+                <p>🌸 Question 1: Who are you? (The one who makes my heart smile) 🌸</p>
+                <input type="text" id="answer1" class="quiz-input" placeholder="Type your answer here...">
+            </div>
+            
+            <!-- Question 2: When you shine (birthday code) -->
+            <div class="quiz-question">
+                <p>⭐ Question 2: When do you shine the brightest? (Hint: Your birthday - 8 digits) ⭐</p>
+                <input type="text" id="answer2" class="quiz-input" placeholder="Enter 8 digit code..." maxlength="8">
+            </div>
+            
+            <!-- Question 3: Image Selection -->
+            <div class="quiz-question">
+                <p>🦋 Question 3: Which one feels like YOU? 🦋</p>
+                <div class="image-options" id="imageOptions">
+                    <div class="image-option" data-value="angel">
+                        <div class="image-emoji">👼🌸</div>
+                        <span>Angel</span>
+                    </div>
+                    <div class="image-option" data-value="panda">
+                        <div class="image-emoji">🐼🎋</div>
+                        <span>Panda</span>
+                    </div>
+                    <div class="image-option" data-value="butterfly">
+                        <div class="image-emoji">🦋✨</div>
+                        <span>Butterfly</span>
+                    </div>
+                    <div class="image-option" data-value="star">
+                        <div class="image-emoji">⭐🌙</div>
+                        <span>Star</span>
+                    </div>
+                </div>
+                <input type="hidden" id="selectedImage" value="">
+            </div>
+            
+            <button class="quiz-submit" id="submitQuiz">💖 Submit Answers 💖</button>
+            <div id="quizFeedback" class="quiz-feedback"></div>
+        </div>
+        
+        <!-- 🌙 WAIT MESSAGE (shown after correct answers) -->
+        <div id="waitMessage" class="wait-message">
+            <div style="font-size: 3rem;">😜🌸🎁</div>
+            <h3 style="color: #8b4513; margin: 10px 0;">Hahaha! You got it right! 🎉</h3>
+            <p style="color: #5a2e2e; font-weight: bold; font-size: 1.1rem;">
+                💖 But wait... the magic isn't over yet! 💖<br><br>
+                🌙✨ You have to wait ONE MORE DAY for the next surprise! ✨🌙<br><br>
+                <span style="font-size: 1.2rem;">💌 I love you more than words can say! 💌</span><br><br>
+                <span style="font-size: 0.9rem;">🌟 Come back tomorrow for more magic 🌟</span>
+            </p>
+            <div style="margin-top: 10px; font-size: 1.8rem;">💕 🎂 💕</div>
+        </div>
+        
+        <button id="replayFromPage3Btn" style="background:#ffb3ba; border:none; border-radius:40px; padding:10px 28px; margin-top:20px; font-weight:bold; cursor:pointer;">🎈 Start Over 🎈</button>
+        <footer>✨ Answer from your heart ✨</footer>
+    </div>
+</div>
+
+<script>
+    (function() {
+        // -------- PAGES --------
+        const page1 = document.getElementById('page1');
+        const page2 = document.getElementById('page2');
+        const page3 = document.getElementById('page3');
+        const pages = [page1, page2, page3];
+        
+        // Quiz state (no localStorage - resets on refresh)
+        let quizCompleted = false;
+        
+        // Correct answers
+        const CORRECT_ANSWERS = {
+            q1: "preety",  // case insensitive
+            q2: "22042005"
+        };
+        
+        function showPage(pageNumber) {
+            pages.forEach((p, idx) => {
+                if (p) {
+                    if (idx + 1 === pageNumber) {
+                        p.classList.add('active-page');
+                    } else {
+                        p.classList.remove('active-page');
+                    }
+                }
+            });
+            if (pageNumber === 2) {
+                triggerConfettiEffect();
+                playSoftSound();
+            }
+            if (pageNumber === 3) {
+                const songSection = document.querySelector('.song-section');
+                if (songSection) {
+                    songSection.style.animation = 'none';
+                    setTimeout(() => {
+                        songSection.style.animation = 'gentlePulse 2s infinite';
+                    }, 10);
+                }
+                playSoftSound();
+            }
+        }
+        
+        // -------- MOVING BUTTON GAME --------
+        const mischiefBtn = document.getElementById('mischiefBtn');
+        const timerInfo = document.getElementById('timerInfo');
+        const moveArea = document.getElementById('moveArea');
+        let gameActive = false;
+        let startTime = 0;
+        let moveInterval = null;
+        let countdownInterval = null;
+        let redirectTimeout = null;
+        
+        function getSmoothPosition() {
+            if (!moveArea) return { x: 0, y: 0 };
+            const containerRect = moveArea.getBoundingClientRect();
+            const containerWidth = containerRect.width;
+            const containerHeight = containerRect.height;
+            const btnWidth = mischiefBtn.offsetWidth;
+            const btnHeight = mischiefBtn.offsetHeight;
+            const maxX = Math.max(10, containerWidth - btnWidth - 15);
+            const maxY = Math.max(10, containerHeight - btnHeight - 15);
+            const randomX = Math.random() * maxX;
+            const randomY = Math.random() * maxY;
+            return { x: randomX, y: randomY };
+        }
+        
+        function moveButtonSmoothly() {
+            if (!gameActive) return;
+            const pos = getSmoothPosition();
+            mischiefBtn.style.position = 'absolute';
+            mischiefBtn.style.left = pos.x + 'px';
+            mischiefBtn.style.top = pos.y + 'px';
+            mischiefBtn.style.margin = '0';
+        }
+        
+        function resetButtonPosition() {
+            mischiefBtn.style.position = 'relative';
+            mischiefBtn.style.left = 'auto';
+            mischiefBtn.style.top = 'auto';
+            mischiefBtn.style.margin = '0 auto';
+            mischiefBtn.style.display = 'inline-block';
+        }
+        
+        function stopGameAndMoveToPage2() {
+            if (!gameActive) return;
+            gameActive = false;
+            if (moveInterval) clearInterval(moveInterval);
+            if (countdownInterval) clearInterval(countdownInterval);
+            if (redirectTimeout) clearTimeout(redirectTimeout);
+            resetButtonPosition();
+            mischiefBtn.disabled = false;
+            mischiefBtn.innerText = "🎁 GET ME TO THE NEXT PAGE 🎁";
+            timerInfo.innerHTML = "🎉 Yay! Unlocking page 2... 🎉";
+            setTimeout(() => {
+                showPage(2);
+            }, 400);
+        }
+        
+        function startDodgeGame() {
+            if (gameActive) return;
+            gameActive = true;
+            startTime = Date.now();
+            timerInfo.innerHTML = `⏰ 20 seconds left... the button moves smoothly! 🏃‍♀️💨`;
+            moveInterval = setInterval(() => {
+                if (gameActive) moveButtonSmoothly();
+            }, 420);
+            
+            countdownInterval = setInterval(() => {
+                if (!gameActive) return;
+                const elapsed = Math.floor((Date.now() - startTime) / 1000);
+                const left = Math.max(0, 20 - elapsed);
+                timerInfo.innerHTML = `⏰ ${left} seconds left... catch me if you can! ✨`;
+                if (left <= 0) {
+                    clearInterval(countdownInterval);
+                    clearInterval(moveInterval);
+                    stopGameAndMoveToPage2();
+                }
+            }, 300);
+            
+            redirectTimeout = setTimeout(() => {
+                if (gameActive) stopGameAndMoveToPage2();
+            }, 20500);
+            
+            mischiefBtn.innerText = "😜 TRY TO CLICK 😜";
+            timerInfo.style.background = "#ffe0b5";
+        }
+        
+        function onMischiefClick(e) {
+            e.stopPropagation();
+            if (!gameActive) {
+                startDodgeGame();
+                return;
+            }
+            if (gameActive) {
+                const popMsg = document.createElement('div');
+                popMsg.innerText = '💖 nice try! 💖';
+                popMsg.style.position = 'absolute';
+                popMsg.style.left = (e.clientX - 40) + 'px';
+                popMsg.style.top = (e.clientY - 30) + 'px';
+                popMsg.style.background = '#fffacd';
+                popMsg.style.padding = '4px 12px';
+                popMsg.style.borderRadius = '30px';
+                popMsg.style.fontSize = '0.8rem';
+                popMsg.style.fontWeight = 'bold';
+                popMsg.style.pointerEvents = 'none';
+                popMsg.style.zIndex = '999';
+                document.body.appendChild(popMsg);
+                setTimeout(() => popMsg.remove(), 800);
+                if (navigator.vibrate) navigator.vibrate(30);
+                moveButtonSmoothly();
+                const elapsedSec = Math.floor((Date.now() - startTime) / 1000);
+                const leftSec = Math.max(0, 20 - elapsedSec);
+                timerInfo.innerHTML = `😘 sneaky! ${leftSec} seconds left, keep chasing~ 😘`;
+            }
+        }
+        
+        mischiefBtn.addEventListener('click', onMischiefClick);
+        
+        // -------- IMAGE SELECTION --------
+        let selectedImageValue = '';
+        const imageOptions = document.querySelectorAll('.image-option');
+        const selectedImageInput = document.getElementById('selectedImage');
+        
+        imageOptions.forEach(option => {
+            option.addEventListener('click', () => {
+                imageOptions.forEach(opt => opt.classList.remove('selected'));
+                option.classList.add('selected');
+                selectedImageValue = option.getAttribute('data-value');
+                selectedImageInput.value = selectedImageValue;
+                playSoftSound();
+            });
+        });
+        
+        // -------- SUBMIT QUIZ --------
+        const submitBtn = document.getElementById('submitQuiz');
+        const answer1Input = document.getElementById('answer1');
+        const answer2Input = document.getElementById('answer2');
+        const quizFeedback = document.getElementById('quizFeedback');
+        const waitMessage = document.getElementById('waitMessage');
+        const quizSection = document.querySelector('.quiz-section');
+        
+        function checkAnswers() {
+            const ans1 = answer1Input.value.trim().toLowerCase();
+            const ans2 = answer2Input.value.trim();
+            const ans3 = selectedImageValue;
+            
+            quizFeedback.style.display = 'block';
+            
+            const isQ1Correct = (ans1 === CORRECT_ANSWERS.q1);
+            const isQ2Correct = (ans2 === CORRECT_ANSWERS.q2);
+            
+            if (!isQ1Correct && !isQ2Correct) {
+                quizFeedback.innerHTML = '💕 Hmm... both answers don\'t match. Try again from your heart! 💕';
+                quizFeedback.style.background = '#ffe0e0';
+                quizFeedback.style.color = '#c44';
+            } else if (!isQ1Correct) {
+                quizFeedback.innerHTML = '🌸 Who are you? Think about what I call you... Try again! 🌸';
+                quizFeedback.style.background = '#ffe0e0';
+                quizFeedback.style.color = '#c44';
+            } else if (!isQ2Correct) {
+                quizFeedback.innerHTML = '⭐ When do you shine? Hint: The day you were born! (8 digits: DDMMYYYY) ⭐';
+                quizFeedback.style.background = '#ffe0e0';
+                quizFeedback.style.color = '#c44';
+            } else {
+                // Both answers correct! Show wait message
+                quizFeedback.style.display = 'none';
+                quizSection.style.display = 'none';
+                waitMessage.style.display = 'block';
+                triggerBigConfetti();
+                playSoftSound();
+                quizCompleted = true;
+            }
+        }
+        
+        submitBtn.addEventListener('click', checkAnswers);
+        
+        answer1Input.addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') checkAnswers();
+        });
+        answer2Input.addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') checkAnswers();
+        });
+        
+        // -------- CONFETTI EFFECTS --------
+        function triggerConfettiEffect() {
+            const container = document.getElementById('page2');
+            if (!container) return;
+            for (let i = 0; i < 40; i++) {
+                const conf = document.createElement('div');
+                conf.innerHTML = ['🎉','🎊','🎈','💖','🌸','🦄','🎀','🍬','✨','⭐'][Math.floor(Math.random() * 10)];
+                conf.style.position = 'absolute';
+                conf.style.fontSize = (Math.random() * 24 + 16) + 'px';
+                conf.style.left = Math.random() * 100 + '%';
+                conf.style.top = '-30px';
+                conf.style.pointerEvents = 'none';
+                conf.style.zIndex = '999';
+                conf.style.opacity = '0.9';
+                conf.style.animation = `fallRandom ${Math.random() * 2 + 1.5}s linear forwards`;
+                container.appendChild(conf);
+                setTimeout(() => conf.remove(), 2800);
+            }
+        }
+        
+        function triggerBigConfetti() {
+            for (let i = 0; i < 80; i++) {
+                const conf = document.createElement('div');
+                conf.innerHTML = ['🎉','🎊','🎈','💖','🌸','✨','⭐','🎀','🦄','🍰'][Math.floor(Math.random() * 10)];
+                conf.style.position = 'fixed';
+                conf.style.fontSize = (Math.random() * 24 + 16) + 'px';
+                conf.style.left = Math.random() * 100 + '%';
+                conf.style.top = '-20px';
+                conf.style.pointerEvents = 'none';
+                conf.style.zIndex = '9999';
+                conf.style.opacity = '0.9';
+                conf.style.animation = `fallRandom ${Math.random() * 2 + 1}s linear forwards`;
+                document.body.appendChild(conf);
+                setTimeout(() => conf.remove(), 2500);
+            }
+        }
+        
+        const style = document.createElement('style');
+        style.textContent = `
+            @keyframes fallRandom {
+                0% { transform: translateY(0) rotate(0deg); opacity: 1; }
+                100% { transform: translateY(90vh) rotate(360deg); opacity: 0; }
+            }
+        `;
+        document.head.appendChild(style);
+        
+        function playSoftSound() {
+            try {
+                const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+                const osc = audioCtx.createOscillator();
+                const gain = audioCtx.createGain();
+                osc.connect(gain);
+                gain.connect(audioCtx.destination);
+                osc.frequency.value = 987.77;
+                gain.gain.value = 0.12;
+                osc.type = 'sine';
+                osc.start();
+                gain.gain.exponentialRampToValueAtTime(0.00001, audioCtx.currentTime + 0.6);
+                osc.stop(audioCtx.currentTime + 0.6);
+                if (audioCtx.state === 'suspended') audioCtx.resume();
+            } catch(e) { console.log("gentle audio"); }
+        }
+        
+        // -------- NAVIGATION BUTTON --------
+        document.getElementById('gotoPage3Btn')?.addEventListener('click', () => {
+            showPage(3);
+            playSoftSound();
+        });
+        
+        // -------- REPLAY BUTTON (resets everything, no localStorage) --------
+        document.getElementById('replayFromPage3Btn')?.addEventListener('click', () => {
+            if (moveInterval) clearInterval(moveInterval);
+            if (countdownInterval) clearInterval(countdownInterval);
+            if (redirectTimeout) clearTimeout(redirectTimeout);
+            gameActive = false;
+            resetButtonPosition();
+            mischiefBtn.innerText = "🎁 GET ME TO THE NEXT PAGE 🎁";
+            mischiefBtn.disabled = false;
+            timerInfo.innerHTML = "✨ click the button & it will play hide & seek ✨";
+            timerInfo.style.background = "#ffe0f0";
+            
+            // Reset quiz (no localStorage - just reset variables)
+            quizCompleted = false;
+            answer1Input.value = '';
+            answer2Input.value = '';
+            selectedImageValue = '';
+            selectedImageInput.value = '';
+            imageOptions.forEach(opt => opt.classList.remove('selected'));
+            quizFeedback.style.display = 'none';
+            quizSection.style.display = 'block';
+            waitMessage.style.display = 'none';
+            
+            const songSection = document.querySelector('.song-section');
+            if (songSection) {
+                songSection.style.animation = 'none';
+                setTimeout(() => {
+                    songSection.style.animation = 'gentlePulse 2s infinite';
+                }, 10);
+            }
+            
+            showPage(1);
+        });
+        
+        // Background floating icons
+        function generateBackgroundIcons() {
+            const bgContainer = document.getElementById('floatingBg');
+            const icons = ['🎀', '🌸', '🦄', '🐱', '🎈', '🍰', '💖', '⭐', '✨', '🎂'];
+            for (let i = 0; i < 50; i++) {
+                const span = document.createElement('span');
+                span.innerText = icons[Math.floor(Math.random() * icons.length)];
+                span.style.fontSize = (Math.random() * 28 + 18) + 'px';
+                span.style.left = Math.random() * 100 + '%';
+                span.style.animationDuration = 12 + Math.random() * 20 + 's';
+                span.style.animationDelay = Math.random() * 15 + 's';
+                span.style.opacity = 0.2 + Math.random() * 0.4;
+                bgContainer.appendChild(span);
+            }
+        }
+        generateBackgroundIcons();
+        
+        if (moveArea) moveArea.style.position = 'relative';
+        
+        // Animate music notes when song plays
+        const songAudio = document.getElementById('birthdaySong');
+        if (songAudio) {
+            songAudio.addEventListener('play', () => {
+                const notes = document.querySelectorAll('.music-note');
+                notes.forEach(note => {
+                    note.style.animation = 'bounce 0.5s infinite';
+                });
+            });
+            songAudio.addEventListener('pause', () => {
+                const notes = document.querySelectorAll('.music-note');
+                notes.forEach(note => {
+                    note.style.animation = 'bounce 0.8s infinite ease-in-out';
+                });
+            });
+        }
+    })();
+</script>
+</body>
+</html>
